@@ -66,6 +66,28 @@ void show_hidtogram_text(vector<size_t> bins)
         cout << '\n';
     }
 }
+void
+svg_begin(double width, double height)
+{
+    cout << "<?xml version='1.0' encoding='UTF-8'?>\n";
+    cout << "<svg width='" << width << "' height='" << height << "' "
+         << "viewBox='0 0 " << width << " " << height << "' "
+         << "xmlns='http://www.w3.org/2000/svg'>\n";
+}
+
+void
+svg_end() {
+    cout << "</svg>\n";
+}
+
+
+
+void show_histogram_svg(const vector<size_t> bins)
+{
+    svg_begin(400, 300);
+    //svg_text(20, 20, to_string(bins[0]));
+    svg_end();
+}
 int
 main() {
     // Ввод данных
@@ -104,6 +126,9 @@ main() {
         bins[bin]++;
     }
 
+    show_histogram_svg(bins);
+
+/*
     // Вывод данных
     const size_t SCREEN_WIDTH = 80;
     const size_t MAX_ASTERISK = SCREEN_WIDTH - 4 - 1;
@@ -135,7 +160,7 @@ main() {
             cout << '*';
         }
         cout << '\n';
-    }
+    }*/
 
     return 0;
 }
