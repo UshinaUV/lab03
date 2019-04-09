@@ -76,16 +76,40 @@ svg_begin(double width, double height)
 }
 
 void
-svg_end() {
+svg_end()
+{
     cout << "</svg>\n";
 }
-
-
-
-void show_histogram_svg(const vector<size_t> bins)
+void svg_text(double left, double baseline, string text)
 {
-    svg_begin(400, 300);
-    //svg_text(20, 20, to_string(bins[0]));
+    cout<<"<text x='"<<left<<"' y='"<<baseline<<"'>"<<text<<"</text>";
+}
+void svg_rect(double x, double y, double width, double height,string stroke = "black", string fill = "black")
+{
+    cout<< "<rect x='"<<x<<"' y='"<<y<<"' width='"<<width<<"' stroke='"<<stroke<<"' fill='"<<fill<<"' height='"<<height<<"' />";
+}
+
+void
+show_histogram_svg(const vector<size_t>& bins)
+{
+    const auto IMAGE_WIDTH = 400;
+    const auto IMAGE_HEIGHT = 300;
+    const auto TEXT_LEFT = 20;
+    const auto TEXT_BASELINE = 20;
+    const auto TEXT_WIDTH = 50;
+    const auto BIN_HEIGHT = 30;
+    svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
+
+double top = 0;
+for (size_t bin : bins)
+    {
+    const double bin_width = 10 * bin;
+    svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
+    svg_rect(0, 0, 100, 200);             // svg_rect(0, 0, 100, 200, "black", "black");
+    svg_rect(0, 0, 100, 200, "red");      // svg_rect(0, 0, 100, 200, "red",   "black");
+    svg_rect(0, 0, 100, 200, "blue", "green");
+    top += BIN_HEIGHT;
+}
     svg_end();
 }
 int
@@ -127,40 +151,5 @@ main() {
     }
 
     show_histogram_svg(bins);
-
-/*
-    // Вывод данных
-    const size_t SCREEN_WIDTH = 80;
-    const size_t MAX_ASTERISK = SCREEN_WIDTH - 4 - 1;
-
-    size_t max_count = 0;
-    for (size_t count : bins) {
-        if (count > max_count) {
-            max_count = count;
-        }
-    }
-    const bool scaling_needed = max_count > MAX_ASTERISK;
-
-    for (size_t bin : bins) {
-        if (bin < 100) {
-            cout << ' ';
-        }
-        if (bin < 10) {
-            cout << ' ';
-        }
-        cout << bin << "|";
-
-        size_t height = bin;
-        if (scaling_needed) {
-            const double scaling_factor = (double)MAX_ASTERISK / max_count;
-            height = (size_t)(bin * scaling_factor);
-        }
-
-        for (size_t i = 0; i < height; i++) {
-            cout << '*';
-        }
-        cout << '\n';
-    }*/
-
     return 0;
 }
